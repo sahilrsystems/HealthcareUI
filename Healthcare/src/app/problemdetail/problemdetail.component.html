@@ -1,0 +1,126 @@
+<div class="rightSection">
+    <div class="rightBodySection">
+        <div class="row">
+            <div class="col-12 padding-0">
+                <section class="pageHeadSection">Validate & Save Encounter
+
+
+                    <p class="s-bfEkW-0tDyhP" style="float: right; vertical-align: top;">View Review of System
+                        <a href="# " data-bs-toggle="modal" data-bs-target="#review-edit" class="s-bfEkW-0tDyhP"><i
+                                class="bi bi-pencil-square"></i></a>
+                    </p>
+                </section>
+                <section class="mainBody">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="tabs">
+                                <div class="tab" *ngFor="let tab of tabs; let i = index" [class.active]="selectedTab === tab.title" (click)="selectTab(tab)">
+                                  {{ tab.title }}
+                                </div>
+                              </div>
+                              
+                              <div class="tab-content">
+                                    
+                                    <div *ngIf="selectedTab === 'Detailed Report'">  
+                                      <div class="row">
+                                        <div class="col-8"></div>
+                                        <div class="col-2">
+                                            <a class="black-font right">Generate JSON
+                                                <i class="bi bi-filetype-json s-uoc7Ywo2GpEg"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a class="green-font" style="cursor:pointer;" (click)="submit()">Submit [EHR]
+                                                <i class="bi bi-hospital s-uoc7Ywo2GpEg"></i>
+                                            </a>
+                                        </div>
+                                      </div>
+                                      <div class="row" style="height:15px;">
+                                        <div class="col-10"></div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="col-10"></div>
+                                        <div class="col-2">
+                                            <a class="red-font float-right">Generate PDF
+                                            <i class="bi bi-file-pdf-fill s-uoc7Ywo2GpEg"></i>
+                                        </a>
+                                        </div>
+                                      </div>
+
+                                      <div class="row">
+                                        <div class="col-4">
+
+                                        </div>
+                                        <div class="col-4">
+                                        <h1>{{selectedTab}}</h1></div>
+                                        <div class="col-4">
+
+                                        </div>
+                                      </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="black-font">Subjective : </label><br>
+                                                <!-- <ng-container *ngFor="let line of response.summary.Objective.split('\n')"> -->
+                                                    <textarea class="wider-textarea" [(ngModel)]="response.summary.Objective"></textarea>
+                                                  <!-- </ng-container> -->
+                                                
+                                            </div>
+                                          </div>
+                                          <div class="row" style="height:35px;">
+                                            <div class="col-10"></div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-12">
+                                                <label class="black-font">Objective : </label><br>
+                                                <textarea class="wider-textarea" [(ngModel)]="response.summary.Objective"></textarea>
+                                            </div>
+                                          </div>
+                                          <div class="row" style="height:35px;">
+                                            <div class="col-10"></div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-12">
+                                                <label class="black-font">Assessment : </label><br>
+                                                <textarea class="wider-textarea" [(ngModel)]="response.summary.Assessment"></textarea>
+                                            </div>
+                                          </div>
+                                          <div class="row" style="height:35px;">
+                                            <div class="col-10"></div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-12">
+                                                <label class="black-font">Plan : </label><br>
+                                                <textarea class="wider-textarea" [(ngModel)]="response.summary.Plan"></textarea>
+                                            </div>
+                                          </div>
+                                          <div class="row" style="height:35px;">
+                                            <div class="col-10"></div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-12">
+                                                <label class="black-font">CPT Codes : </label><br>
+                                                <ul>
+                                                    <li *ngFor="let code of response.summary['CPT Codes']">{{ code }}</li>
+                                                  </ul>
+                                            </div>
+                                          </div>
+                                          <div class="row" style="height:35px;">
+                                            <div class="col-10"></div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-12">
+                                                <label class="black-font">ICD Codes : </label><br>
+                                                <ul>
+                                                    <li *ngFor="let code of response.summary['ICD Codes']">{{ code.split('-')[1] }}</li>
+                                                  </ul>
+                                            </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

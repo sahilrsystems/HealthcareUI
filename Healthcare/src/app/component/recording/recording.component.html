@@ -1,0 +1,57 @@
+<div class="rightSection">
+    <div class="rightBodySection">
+        <div class="row">
+            <div class="col-12 padding-0">
+                <section class="pageHeadSection">Record Encounter
+
+
+                    <p class="s-bfEkW-0tDyhP" style="float: right; vertical-align: top;">View Review of System
+                        <a href="# " data-bs-toggle="modal" data-bs-target="#review-edit" class="s-bfEkW-0tDyhP"><i
+                                class="bi bi-pencil-square"></i></a>
+                    </p>
+                </section>
+                <section class="mainBody">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="record-wrap">
+                                <div class="recPlayerBlock">
+                                    <div class="recPatientInfo">
+                                        <p class="s-bfEkW-0tDyhP"><b class="s-bfEkW-0tDyhP">Patient:</b> John Doe (<b
+                                                class="s-bfEkW-0tDyhP">DOB:</b> )</p>
+                                        <p class="s-bfEkW-0tDyhP"><b class="s-bfEkW-0tDyhP">EHR ID:</b>
+                                            42f6d370-bc64-4880-a5ce-0695c8d1c082</p>
+                                    </div>
+                                    <div class="recBlock">
+                                        <div class="s-bfEkW-0tDyhP"
+                                            style="position: absolute; top: 22%; right: 18%; cursor: pointer;"><button
+                                                data-bs-toggle="modal" data-bs-target="#mic-modal"
+                                                class="s-bfEkW-0tDyhP"><i class="bi bi-upload"></i>
+                                                Upload
+                                                an encounter</button></div> <img src="../../../assets/img/conversation.png" width="200"
+                                            height="100" alt="conversation" class="s-bfEkW-0tDyhP">
+                                        <div id="startRec" class="s-bfEkW-0tDyhP">Click <i
+                                                class="bi bi-mic-fill"></i>
+                                            below to record the encounter</div>
+                                        <div id="stopRec" class="s-bfEkW-0tDyhP" style="display: none;">Click <i
+                                                class="bi bi-mic-fill"></i>
+                                            below to stop recording</div>
+                                        <div class="audioPlayer"><audio controls="" id="audioController"
+                                                class="s-bfEkW-0tDyhP" style="width: 100%;"></audio> <canvas
+                                                id="visualizer" width="800" height="50" class="s-bfEkW-0tDyhP"></canvas>
+                                        </div>
+                                        &nbsp;
+                                        <button id="btnMicro" class="btn mic-btn"><i
+                                                class="bi bi-mic-fill"></i></button> <button
+                                            class="btn mic-btn" data-bs-toggle="modal" id="btnMicro1"
+                                            data-bs-target="#mic-modal" style="display: none;"><i
+                                                class="fa fa-microphone"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

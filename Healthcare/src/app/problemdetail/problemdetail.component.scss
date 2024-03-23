@@ -1,0 +1,74 @@
+// .tabs {
+//     display: flex;
+//   }
+  
+//   .tab {
+//     padding: 10px 20px;
+//     cursor: pointer;
+//     border: 1px solid #ccc;
+//     border-bottom: none;
+//     background-color: #f9f9f9;
+//   }
+  
+//   .tab.active {
+//     background-color: #fff;
+//   }
+  
+//   .tab-content {
+//     border: 1px solid #ccc;
+//     padding: 20px;
+//     margin-top: -1px;
+//   }
+.tabs {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.tab:hover {
+  background-color: #f1f1f1;
+}
+
+.tab.active {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.tab-content {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: -1px;
+  border-top: none;
+}
+.green-font{
+color:green;
+font-weight: bold;
+font-size: large;
+}
+
+.red-font{
+  color:red;
+  font-weight: bold;
+  font-size: large;
+}
+
+.black-font{
+  color:black;
+  font-weight: bold;
+  font-size: large;
+}
+
+.wider-textarea {
+  width: 100%!important; /* or specify the width you desire */
+  min-height: 150px!important; /* set a minimum height if needed */
+  resize: vertical!important; /* allow vertical resizing */
+}
