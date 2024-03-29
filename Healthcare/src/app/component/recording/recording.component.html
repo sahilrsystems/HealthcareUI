@@ -5,8 +5,8 @@
                 <section class="pageHeadSection">Record Encounter
 
 
-                    <p class="s-bfEkW-0tDyhP" style="float: right; vertical-align: top;">View Review of System
-                        <a href="# " data-bs-toggle="modal" data-bs-target="#review-edit" class="s-bfEkW-0tDyhP"><i
+                    <p class="" style="float: right; vertical-align: top;">View Review of System
+                        <a href="# " data-bs-toggle="modal" data-bs-target="#review-edit" class=""><i
                                 class="bi bi-pencil-square"></i></a>
                     </p>
                 </section>
@@ -16,41 +16,80 @@
                             <div class="record-wrap">
                                 <div class="recPlayerBlock">
                                     <div class="recPatientInfo">
-                                        <p class="s-bfEkW-0tDyhP"><b class="s-bfEkW-0tDyhP">Patient:</b> John Doe (<b
-                                                class="s-bfEkW-0tDyhP">DOB:</b> )</p>
-                                        <p class="s-bfEkW-0tDyhP"><b class="s-bfEkW-0tDyhP">EHR ID:</b>
+                                        <p class=""><b class="">Patient:</b> John Doe (<b class="">DOB:</b> )</p>
+                                        <p class=""><b class="">EHR ID:</b>
                                             42f6d370-bc64-4880-a5ce-0695c8d1c082</p>
                                     </div>
                                     <div class="recBlock">
-                                        <div class="s-bfEkW-0tDyhP"
+                                        <div class=""
                                             style="position: absolute; top: 22%; right: 18%; cursor: pointer;"><button
                                                 data-bs-toggle="modal" data-bs-target="#mic-modal"
-                                                class="s-bfEkW-0tDyhP"><i class="bi bi-upload"></i>
+                                                (click)="file.click();staticModal.show(); isLoading=true;" class=""><i
+                                                    class="bi bi-upload"></i>
                                                 Upload
-                                                an encounter</button></div> <img src="../../../assets/img/conversation.png" width="200"
-                                            height="100" alt="conversation" class="s-bfEkW-0tDyhP">
-                                        <div id="startRec" class="s-bfEkW-0tDyhP">Click <i
-                                                class="bi bi-mic-fill"></i>
+                                                an encounter</button></div>
+                                        <input type="file" style="display: none;" id="file"
+                                            (change)="handleFileInput($event)" #file> <img
+                                            src="../../../assets/img/conversation.png" width="200" height="100"
+                                            alt="conversation" class="">
+                                        <div id="startRec" class="">Click <i class="bi bi-mic-fill"></i>
                                             below to record the encounter</div>
-                                        <div id="stopRec" class="s-bfEkW-0tDyhP" style="display: none;">Click <i
+                                        <div id="stopRec" class="" style="display: none;">Click <i
                                                 class="bi bi-mic-fill"></i>
                                             below to stop recording</div>
-                                        <div class="audioPlayer"><audio controls="" id="audioController"
-                                                class="s-bfEkW-0tDyhP" style="width: 100%;"></audio> <canvas
-                                                id="visualizer" width="800" height="50" class="s-bfEkW-0tDyhP"></canvas>
+                                        <div class="audioPlayer"><audio #audioPlayer controls="" id="audioController"
+                                                class="" style="width: 100%;"></audio> <canvas id="visualizer"
+                                                width="800" height="50" class=""></canvas>
                                         </div>
                                         &nbsp;
-                                        <button id="btnMicro" class="btn mic-btn"><i
-                                                class="bi bi-mic-fill"></i></button> <button
-                                            class="btn mic-btn" data-bs-toggle="modal" id="btnMicro1"
-                                            data-bs-target="#mic-modal" style="display: none;"><i
-                                                class="fa fa-microphone"></i></button>
+                                        <button *ngIf="!isRecording" id="btnMicro" class="btn mic-btn"
+                                            (click)="startStopRecording()"><i class="bi bi-mic-fill"></i></button>
+                                        <button class="btn mic-btn" *ngIf="isRecording" data-bs-toggle="modal"
+                                            id="btnMicro1" data-bs-target="#mic-modal"
+                                            (click)="stopRecording();staticModal.show();">
+                                            <i class="bi bi-mic-mute-fill"></i></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+    aria-labelledby="dialog-static-name">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="dialog-static-name" class="modal-title pull-left">Patient Encounter</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close"
+                    (click)="staticModal.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="isLoading">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status"></div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!isLoading">
+                        <div class="modal-success"><i style="font-size: xx-large;" class="bi bi-check-circle-fill"></i>
+                            Success</div>
+                        <p class="">
+                            <audio id="player" controls="" class=""
+                                [src]="audioSrc"
+                                style="width: 100%;"></audio>
+                        </p>
+                        <p class="">Audio stream has been processed successfully using AI/ML. <br class="">
+                            Click on Next button to validate and submit the encounter.</p> 
+                            <a class="btn next-btn" style="cursor:pointer;" (click)="Next()">Next
+                            </a>
+                </ng-container>
             </div>
         </div>
     </div>

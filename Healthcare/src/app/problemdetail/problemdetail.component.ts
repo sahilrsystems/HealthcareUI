@@ -1,9 +1,19 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProblemDetailService } from '../problem-detail.service';
-import { HttpClientModule } from '@angular/common/http';
+import exportFromJSON from 'export-from-json';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AudioRecordingService } from '../services/audio-recording.service';
+import { ActivatedRoute } from '@angular/router';
+import { PatientEncounterDetail } from '../interface/patientEncounterDetail';
 
+
+interface JSON{
+  updatedjson:string;
+}
 
 interface Tab {
   title: string;
@@ -11,38 +21,60 @@ interface Tab {
 
 @Component({
   selector: 'app-problemdetail',
+  templateUrl: './problemdetail.component.html',
+  providers:[ProblemDetailService],
   standalone: true,
   imports: [CommonModule,FormsModule,HttpClientModule],
-  templateUrl: './problemdetail.component.html',
   styleUrl: './problemdetail.component.scss'
 })
-export class ProblemdetailComponent {
-
-  constructor(){}
-
-  response :any={
-    "summary": {
-        "Assessment": "- Suspected viral fever with associated body aches and gastrointestinal discomfort.\n- Mild dehydration likely due to insufficient fluid intake.",
-        "CPT Codes": [
-            "Consultation Duration: 99203"
-        ],
-        "ICD Codes": [
-            "- PRIMARY:-",
-            "- R50.9: Fever, unspecified.",
-            "-",
-            "- SUGGESTIVE:-",
-            "- R53.83: Other fatigue.",
-            "- R63.0: Anorexia.",
-            "- R11.0: Nausea.",
-            "- Z71.89: Other specified counseling, not elsewhere classified (pertaining to the recommendation for primary care and routine health maintenance).",
-            "ROS:",
-            "- No additional information from ROS can be factored into the Assessment as there is no mention of eye symptoms in the main text."
-        ],
-        "Objective": "- Physical examination reveals normal vital signs and no temperature.\n- HEENT (head, eyes, ears, nose, throat) exam is negative.\n- Heart and lung exams show no abnormalities.\n- Abdominal exam is negative with normal bowel sounds, no pain, discomfort, guarding, or rigidity.\n- The skin appears normal, not indicative of dehydration.",
-        "Plan": "- Encourage increased fluid intake, aiming for at least 6 to 8 glasses per day, plus an extra glass to account for fever-induced dehydration.\n- Advised to consume soft foods and sugary foods for energy, avoiding greasy foods.\n- Recommended to continue taking Tylenol every 4 to 6 hours for fever management.\n- No blood tests suggested at this stage due to the presumed simplicity of the viral infection.\n- Follow-up communication through the patient portal encouraged, and a suggestion to establish regular primary care for routine health maintenance.",
-        "Subjective": "- The patient reports a fever for the last two days with fluctuating temperatures between 99 to 101 degrees Fahrenheit.\n- Body aches are present; experiences nausea when lying down and a sensation of stomach bloating.\n- The patient has a decreased appetite and reduced food intake but has been consuming fluids, specifically around 2 to 3 ounces of lemonade.\n- Sleep patterns may be affected due to the illness, although not explicitly stated.\n- No recent travel or known contact with sick individuals."
-    }
+export class ProblemdetailComponent implements OnInit {
+  data:any = [{ foo: 'foo'}, { bar: 'bar' }];
+fileName : string = 'download';
+exportType =  exportFromJSON.types.json;
+receivedData: any;
+advisory:any;
+newSummary:any;
+summary:any;
+patient : PatientEncounterDetail={
+    PartitionKey:"",
+      RowKey:"",
+      Timestamp: new Date,
+      ETag: "",
+      RecordingBlobPath: "",
+      ConsultationStartDateTime: new Date,
+      ConsultationEndDateTime:new Date,
+      OriginalJson: "",
+      UpdatedJson: ""
 };
+
+
+ngOnInit(): void {
+  
+}
+
+  constructor(private route: ActivatedRoute, private dataService : ProblemDetailService,private audioRecordingService: AudioRecordingService){
+   this.receivedData = this.audioRecordingService.getJsonData();
+   
+   this.advisory=this.receivedData["advisory"];
+   this.summary=this.receivedData["summary"];
+   this.newSummary=this.receivedData["new_summary"];
+   this.selectedTab = "Soap Notes"; 
+   this.saveJson();
+  }
+  
+saveJson(){  
+  this.patient.OriginalJson = JSON.stringify(this.receivedData);
+  this.dataService.saveData(this.patient).subscribe(
+    (items: any) => {
+      this.patient.RowKey=items.rowKey;
+      this.patient.PartitionKey=items.partitionKey;
+    },
+    error => {
+      console.log('Error fetching data:', error);
+    }
+  );
+}
+
   tabs = [
     { title: 'Detailed Report' },
     { title: 'Soap Notes' },
@@ -52,11 +84,70 @@ export class ProblemdetailComponent {
 
   selectTab(tab:any) {
     this.selectedTab = tab.title;
-    console.log(this.selectedTab);
   }
   submit(){
-    //this.dataService.saveData(this.response.summary);
-    alert(this.response.summary);
-
+    this.patient.UpdatedJson = JSON.stringify(this.receivedData);
+    this.dataService.updateData(this.patient).subscribe(
+      (items: any) => {
+      },
+      error => {
+        console.log('Error fetching data:', error);
+      }
+    );
   }
+  exportJSON(){
+  exportFromJSON({
+    data: this.receivedData,
+    fileName: 'data_export',
+    exportType: 'json' // or 'json' or 'xls'
+  });
 }
+
+generatePDF(element: HTMLElement) {
+  const htmlContent = element.innerHTML;
+  const doc = new jsPDF();
+  doc.html(htmlContent, {
+    callback: (pdf) => {
+      pdf.save('generated.pdf');
+    }
+  });
+}
+}
+
+
+// // Prepare JSON data as HTML table
+// let htmlContent = '<table>';
+// for (const key in this.response) {
+//   if (this.response.hasOwnProperty(key)) {
+//     const values = this.response[key];
+//     htmlContent += '<tr>';
+//     Object.values(values).forEach((value) => {
+//       htmlContent += `<td>${value}</td>`;
+//     });
+//     htmlContent += '</tr>';
+//   }    
+// }
+// // htmlContent += '</table>';
+// // this.response.forEach((item:any) => {
+// //   htmlContent += '<tr>';
+// //   Object.values(item).forEach((value) => {
+// //     htmlContent += `<td>${value}</td>`;
+// //   });
+// //   htmlContent += '</tr>';
+// // });
+// // htmlContent += '</table>';
+
+// // Convert HTML content to canvas
+
+// htmlContent+=htmlContent+'</table>';
+// console.log(htmlContent);
+// html2canvas(document.getElementById('pdfContent')!).then((canvas) => {
+//   console.log(canvas);
+//   const imgData = canvas.toDataURL('image/png');
+//   const pdf = new jsPDF('p', 'mm', 'a4');
+//   const imgWidth = 210; // A4 width in mm
+//   const imgHeight = (canvas.height * imgWidth) / canvas.width;
+//   pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+ 
+//   pdf.save('generated.pdf');
+// });

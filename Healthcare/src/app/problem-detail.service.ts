@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProblemDetailService {
-  private baseUrl = 'https://localhost:7138/api/';
+  private baseUrl = 'http://localhost:5088/api/';
   constructor(private http: HttpClient) { }
 
-  saveData(dto: any) {
-    return this.http.post<any[]>(this.baseUrl +'Detail/Update',dto);
-    
+  saveData(dto: any): Observable<any> {
+    console.log(dto);
+    return this.http.post<any>(this.baseUrl+'PatientEncounterDetail/SaveOriginalJson',dto);
+  }
+
+  updateData(dto: any): Observable<any> {
+    console.log(dto);
+    return this.http.put<any>(this.baseUrl+'PatientEncounterDetail/Update',dto);
   }
 }

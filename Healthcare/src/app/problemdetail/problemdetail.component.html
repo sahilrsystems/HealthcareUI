@@ -1,126 +1,289 @@
 <div class="rightSection">
-    <div class="rightBodySection">
-        <div class="row">
-            <div class="col-12 padding-0">
-                <section class="pageHeadSection">Validate & Save Encounter
+  <div class="rightBodySection">
+    <div class="row">
+      <div class="col-12 padding-0">
+        <section class="pageHeadSection">Validate & Save Encounter
 
 
-                    <p class="s-bfEkW-0tDyhP" style="float: right; vertical-align: top;">View Review of System
-                        <a href="# " data-bs-toggle="modal" data-bs-target="#review-edit" class="s-bfEkW-0tDyhP"><i
-                                class="bi bi-pencil-square"></i></a>
-                    </p>
-                </section>
-                <section class="mainBody">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="tabs">
-                                <div class="tab" *ngFor="let tab of tabs; let i = index" [class.active]="selectedTab === tab.title" (click)="selectTab(tab)">
-                                  {{ tab.title }}
-                                </div>
-                              </div>
-                              
-                              <div class="tab-content">
-                                    
-                                    <div *ngIf="selectedTab === 'Detailed Report'">  
-                                      <div class="row">
-                                        <div class="col-8"></div>
-                                        <div class="col-2">
-                                            <a class="black-font right">Generate JSON
-                                                <i class="bi bi-filetype-json s-uoc7Ywo2GpEg"></i>
-                                            </a>
-                                        </div>
-                                        <div class="col-2">
-                                            <a class="green-font" style="cursor:pointer;" (click)="submit()">Submit [EHR]
-                                                <i class="bi bi-hospital s-uoc7Ywo2GpEg"></i>
-                                            </a>
-                                        </div>
-                                      </div>
-                                      <div class="row" style="height:15px;">
-                                        <div class="col-10"></div>
-                                      </div>
-                                      <div class="row">
-                                        <div class="col-10"></div>
-                                        <div class="col-2">
-                                            <a class="red-font float-right">Generate PDF
-                                            <i class="bi bi-file-pdf-fill s-uoc7Ywo2GpEg"></i>
-                                        </a>
-                                        </div>
-                                      </div>
+          <p class="s-bfEkW-0tDyhP" style="float: right; vertical-align: top;">View Review of System
+            <a href="# " data-bs-toggle="modal" data-bs-target="#review-edit" class="s-bfEkW-0tDyhP"><i
+                class="bi bi-pencil-square"></i></a>
+          </p>
+        </section>
+        <section class="mainBody">
+          <div class="row">
+            <div class="col-12">
+              <div class="tabs">
+                <div class="tab" *ngFor="let tab of tabs; let i = index" [class.active]="selectedTab === tab.title"
+                  (click)="selectTab(tab)">
+                  {{ tab.title }}
+                </div>
+              </div>
 
-                                      <div class="row">
-                                        <div class="col-4">
+              <div class="tab-content">
 
-                                        </div>
-                                        <div class="col-4">
-                                        <h1>{{selectedTab}}</h1></div>
-                                        <div class="col-4">
 
-                                        </div>
-                                      </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <label class="black-font">Subjective : </label><br>
-                                                <!-- <ng-container *ngFor="let line of response.summary.Objective.split('\n')"> -->
-                                                    <textarea class="wider-textarea" [(ngModel)]="response.summary.Objective"></textarea>
-                                                  <!-- </ng-container> -->
-                                                
-                                            </div>
-                                          </div>
-                                          <div class="row" style="height:35px;">
-                                            <div class="col-10"></div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-12">
-                                                <label class="black-font">Objective : </label><br>
-                                                <textarea class="wider-textarea" [(ngModel)]="response.summary.Objective"></textarea>
-                                            </div>
-                                          </div>
-                                          <div class="row" style="height:35px;">
-                                            <div class="col-10"></div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-12">
-                                                <label class="black-font">Assessment : </label><br>
-                                                <textarea class="wider-textarea" [(ngModel)]="response.summary.Assessment"></textarea>
-                                            </div>
-                                          </div>
-                                          <div class="row" style="height:35px;">
-                                            <div class="col-10"></div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-12">
-                                                <label class="black-font">Plan : </label><br>
-                                                <textarea class="wider-textarea" [(ngModel)]="response.summary.Plan"></textarea>
-                                            </div>
-                                          </div>
-                                          <div class="row" style="height:35px;">
-                                            <div class="col-10"></div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-12">
-                                                <label class="black-font">CPT Codes : </label><br>
-                                                <ul>
-                                                    <li *ngFor="let code of response.summary['CPT Codes']">{{ code }}</li>
-                                                  </ul>
-                                            </div>
-                                          </div>
-                                          <div class="row" style="height:35px;">
-                                            <div class="col-10"></div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-12">
-                                                <label class="black-font">ICD Codes : </label><br>
-                                                <ul>
-                                                    <li *ngFor="let code of response.summary['ICD Codes']">{{ code.split('-')[1] }}</li>
-                                                  </ul>
-                                            </div>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
+                <div *ngIf="selectedTab === 'Soap Notes'">
+                  <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-2">
+                      
                     </div>
-                </section>
+                    <div class="col-2"><a class="red-font float-right" style="cursor:pointer;"
+                      (click)="generatePDF(contentToExport3)">Generate PDF
+                      <i class="bi bi-file-pdf-fill s-uoc7Ywo2GpEg"></i>
+                    </a></div>
+                    <div class="col-2">
+                      <a class="green-font" style="cursor:pointer;" (click)="submit()">Submit [EHR]
+                        <i class="bi bi-hospital s-uoc7Ywo2GpEg"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+
+                    </div>
+                    <div class="col-4">
+                      <h1>{{selectedTab}}</h1>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                  </div>
+                  <div class="row" #contentToExport3>
+                    <div class="col-12">
+                      <label class="black-font">Advisory : </label><br>
+                      <ul>
+                        <li *ngFor="let code of advisory">{{ code.split('-')[1] }}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="selectedTab === 'Detailed Report'">
+                  <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-2"></div>
+                    <div class="col-2"><a class="red-font float-right" style="cursor:pointer;"
+                      (click)="generatePDF(contentToExport2)">Generate PDF
+                      <i class="bi bi-file-pdf-fill s-uoc7Ywo2GpEg"></i>
+                    </a></div>
+                    <div class="col-2">
+                      <a class="green-font" style="cursor:pointer;" (click)="submit()">Submit [EHR]
+                        <i class="bi bi-hospital s-uoc7Ywo2GpEg"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                    </div>
+                    <div class="col-4">
+                      <h1>{{selectedTab}}</h1>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                  </div>
+                  <div class="row" #contentToExport2>
+                    <div class="col-12">
+                      <label class="black-font">Subjective : </label><br>
+                      <!-- <ng-container *ngFor="let line of response.summary.Objective.split('\n')"> -->
+                      <textarea class="wider-textarea" [(ngModel)]="summary.Subjective"></textarea>
+                      <!-- </ng-container> -->
+
+                    </div>
+                  </div>
+                  <div class="row" style="height:35px;">
+                    <div class="col-10"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <label class="black-font">Objective : </label><br>
+                      <textarea class="wider-textarea" [(ngModel)]="summary.Objective"></textarea>
+                    </div>
+                  </div>
+                  <div class="row" style="height:35px;">
+                    <div class="col-10"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <label class="black-font">Assessment : </label><br>
+                      <textarea class="wider-textarea" [(ngModel)]="summary.Assessment"></textarea>
+                    </div>
+                  </div>
+                  <div class="row" style="height:35px;">
+                    <div class="col-10"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <label class="black-font">Plan : </label><br>
+                      <textarea class="wider-textarea" [(ngModel)]="summary.Plan"></textarea>
+                    </div>
+                  </div>
+                  <div class="row" style="height:35px;">
+                    <div class="col-10"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <label class="black-font">CPT Codes : </label><br>
+                      <ul>
+                        <li *ngFor="let code of summary['CPT Codes']">{{ code }}</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row" style="height:35px;">
+                    <div class="col-10"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <label class="black-font">ICD Codes : </label><br>
+                      <ul>
+                        <li *ngFor="let code of summary['ICD Codes']">{{ code.split('-')[1] }}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="selectedTab === 'Clinical Notes'">
+                  <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-2">
+                      
+                    </div>
+                    <div class="col-2"><a class="red-font float-right" style="cursor:pointer;"
+                      (click)="generatePDF(contentToExport)">Generate PDF
+                      <i class="bi bi-file-pdf-fill s-uoc7Ywo2GpEg"></i>
+                    </a></div>
+                    <div class="col-2">
+                      <a class="green-font" style="cursor:pointer;" (click)="submit()">Submit [EHR]
+                        <i class="bi bi-hospital s-uoc7Ywo2GpEg"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row" style="height:15px;">
+                    <div class="col-10"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+
+                    </div>
+                    <div class="col-4">
+                      <h1>{{selectedTab}}</h1>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                  </div>
+                  <div #contentToExport>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">Appointments : </label><br>
+                        <!-- <ng-container *ngFor="let line of response.summary.Objective.split('\n')"> -->
+                        <ul>
+                          <li *ngFor="let code of newSummary['Appointments']">{{ code }}</li>
+                        </ul> <!-- </ng-container> -->
+
+                      </div>
+                    </div>
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">CPT Codes : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['CPT Codes']">{{ code }}</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">Assessment : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['Assessment']">{{ code.split('-')[1] }}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">Chief complaint : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['Chief complaint']">{{ code.split('-')[1] }}</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">History of present illness : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['History of present illness']">{{ code.split('-')[1] }}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">ICD Codes : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['ICD Codes']">{{ code.split('-')[1] }}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">Plan : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['Plan']">{{ code.split('-')[1] }}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">Prescription : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['Prescription']">{{ code.split('-')[1] }}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="row" style="height:35px;">
+                      <div class="col-10"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="black-font">Vitals : </label><br>
+                        <ul>
+                          <li *ngFor="let code of newSummary['Vitals']">{{ code.split('-')[1] }}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
+        </section>
+      </div>
     </div>
+  </div>
 </div>
