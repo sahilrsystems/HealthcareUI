@@ -8,6 +8,10 @@ export const routes: Routes = [
         component:RecordingComponent
     },
     {
+        path:'',
+        component:RecordingComponent
+    },
+    {
         path   :'problemDetail',
         component:ProblemdetailComponent
     }
