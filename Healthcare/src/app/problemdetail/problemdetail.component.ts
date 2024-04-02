@@ -76,9 +76,9 @@ saveJson(){
 }
 
   tabs = [
-    { title: 'Detailed Report' },
     { title: 'Soap Notes' },
-    { title: 'Clinical Notes' }
+    // { title: 'Soap Notes1' },
+    // { title: 'Clinical Notes' }
   ];
   selectedTab: any;
 

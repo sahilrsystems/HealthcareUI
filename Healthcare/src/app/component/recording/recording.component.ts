@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild, viewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, NgZone, TemplateRef, ViewChild, viewChildren } from '@angular/core';
 import { AudioRecordingService } from '../../services/audio-recording.service';
 import { HttpService } from '../../services/http.services';
 import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
@@ -23,16 +23,15 @@ export class RecordingComponent {
     jsonStr: any = "";
     start!: any;
     end!: any;
-    modalRef?: BsModalRef;
     fileToUpload!: any;
     isLoading: boolean = false;
     audioSrc!: any
-    response:any;
+    response: any;
     @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
     @ViewChild('player') player!: ElementRef<HTMLAudioElement>;
-    
+
     constructor(private audioRecordingService: AudioRecordingService, private cd: ChangeDetectorRef,
-        private http: HttpService, private modalService: BsModalService,private router:Router) {
+        private http: HttpService, private router: Router, private ngZone: NgZone) {
 
     }
 
@@ -45,22 +44,10 @@ export class RecordingComponent {
         });
     }
 
-    openModal(template: TemplateRef<void>) {
-        this.modalRef = this.modalService.show(template);
-    }
-
     handleFileInput(event: any) {
         let duration = 0;
         this.fileToUpload = event.target.files[0];
-        this.audioURL = window.URL.createObjectURL(this.fileToUpload);
-        var audio = new Audio(this.audioURL);
-        // fileItem.file.audioDuration = audio.duration; //won't work
-        audio.addEventListener('loadeddata', function () {
-            duration = audio.duration;
-        });
         this.onUploadBlob(this.fileToUpload, duration);
-        this.audioSrc = this.audioURL;
-        this.cd.detectChanges();
     }
 
     startStopRecording() {
@@ -150,11 +137,11 @@ export class RecordingComponent {
 
         this.audioRecordingService.audioBlob$.subscribe(blob => {
             this.onUploadBlob(blob, audioLength);
-            //this.onMLCall(blob,audioLength);
         });
     }
 
     onUploadBlob(blob: Blob, audioLength: number) {
+        this.isLoading = true;
         const formblob = new FormData();
         formblob.append("files", blob)
         this.http.post(environment.UploadBlob, formblob).subscribe((result: any) => {
@@ -165,10 +152,6 @@ export class RecordingComponent {
                 eTag: result.response.value.eTag
             }
             this.onSubmitPatientEncounter(blob, tableData, audioLength);
-            // this.http.post(environment.AddPatientEncounter, tableData).subscribe((result: any) => {
-            //     console.log("table Result", result);
-
-            // });
         });
     }
     onSubmitPatientEncounter(blob: Blob, value: any, audioLength: number) {
@@ -194,15 +177,20 @@ export class RecordingComponent {
         this.http.postML(environment.MLSummary, formData).subscribe((result) => {
             this.audioRecordingService.setEHRChange(result);
             this.response = result;
-            console.log(JSON.stringify(result));
-            console.log("result", result);
-            this.isLoading=false;
+            this.isLoading = false;
+            this.setAudioURL(blob);
         });
     }
 
-    Next(){
+    Next() {
         console.log(this.response);
-        this.router.navigate(['/problemDetail']);
+        this.ngZone.run(() => this.router.navigate(['/problemDetail']))
+    }
+
+    setAudioURL(blob: Blob) {
+        window.URL.createObjectURL(blob);
+        this.audioSrc = this.audioURL;
+        this.cd.detectChanges();
     }
 
 }
