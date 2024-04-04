@@ -22,6 +22,7 @@ export class RecordingComponent {
     audioURL: string | null = null;
     jsonStr: any = "";
     start!: any;
+    startTime!:any
     end!: any;
     fileToUpload!: any;
     isLoading: boolean = false;
@@ -47,7 +48,7 @@ export class RecordingComponent {
     handleFileInput(event: any) {
         let duration = 0;
         this.fileToUpload = event.target.files[0];
-        this.onUploadBlob(this.fileToUpload, duration);
+        this.onUploadBlob(this.fileToUpload, duration,new Date().toISOString(),new Date().toISOString());
     }
 
     startStopRecording() {
@@ -124,6 +125,7 @@ export class RecordingComponent {
     startRecording() {
         this.isRecording = true;
         this.start = Date.now();
+        this.startTime= new Date().toISOString();
         this.audioRecordingService.startRecording();
     }
 
@@ -136,11 +138,11 @@ export class RecordingComponent {
         console.log("audioLength = ", audioLength);
 
         this.audioRecordingService.audioBlob$.subscribe(blob => {
-            this.onUploadBlob(blob, audioLength);
+            this.onUploadBlob(blob, audioLength,this.startTime,new Date().toISOString());
         });
     }
 
-    onUploadBlob(blob: Blob, audioLength: number) {
+    onUploadBlob(blob: Blob, audioLength: number,startTime:any,endTime:any) {
         this.isLoading = true;
         const formblob = new FormData();
         formblob.append("files", blob)
@@ -148,8 +150,13 @@ export class RecordingComponent {
             console.log("blob Result", result);
             const tableData = {
                 partitionKey: "20b65520-5337-4f0d-a047-7a70f579082f",
+                rowKey:result.fileName,
                 recordingBlobPath: "https://rsiehrstorage.blob.core.windows.net/ehraudio/" + result.fileName + ".wav",
-                eTag: result.response.value.eTag
+                eTag: result.response.value.eTag,
+                encounterType:"General",
+                patientContext:"Test User",
+                consultationStartDateTime:startTime,
+                consultationEndDateTime:endTime
             }
             this.onSubmitPatientEncounter(blob, tableData, audioLength);
         });
@@ -188,7 +195,7 @@ export class RecordingComponent {
     }
 
     setAudioURL(blob: Blob) {
-        window.URL.createObjectURL(blob);
+        this.audioURL = window.URL.createObjectURL(blob);
         this.audioSrc = this.audioURL;
         this.cd.detectChanges();
     }

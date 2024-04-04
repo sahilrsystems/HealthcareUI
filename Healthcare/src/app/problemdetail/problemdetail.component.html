@@ -5,9 +5,8 @@
         <section class="pageHeadSection">Validate & Save Encounter
 
 
-          <p class="s-bfEkW-0tDyhP" style="float: right; vertical-align: top;">View Review of System
-            <a href="# " data-bs-toggle="modal" data-bs-target="#review-edit" class="s-bfEkW-0tDyhP"><i
-                class="bi bi-pencil-square"></i></a>
+          <p class="s-bfEkW-0tDyhP" style="float: right; vertical-align: top;">
+          
           </p>
         </section>
         <section class="mainBody">
@@ -125,9 +124,10 @@
                   <div class="row">
                     <div class="col-12">
                       <label class="black-font">CPT Codes : </label><br>
-                      <ul>
+                      <textarea class="wider-textarea" [(ngModel)]="summary['CPT Codes']"></textarea>
+                      <!-- <ul>
                         <li *ngFor="let code of summary['CPT Codes']">{{ code }}</li>
-                      </ul>
+                      </ul> -->
                     </div>
                   </div>
                   <div class="row" style="height:35px;">
@@ -136,9 +136,10 @@
                   <div class="row">
                     <div class="col-12">
                       <label class="black-font">ICD Codes : </label><br>
-                      <ul>
+                      <textarea class="wider-textarea" [(ngModel)]="summary['ICD Codes']"></textarea>
+                      <!-- <ul>
                         <li *ngFor="let code of summary['ICD Codes']">{{ code.split('-')[1] }}</li>
-                      </ul>
+                      </ul> -->
                     </div>
                   </div>
                 </div>
