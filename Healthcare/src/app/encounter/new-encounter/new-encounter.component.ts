@@ -2,7 +2,10 @@ import { ChangeDetectorRef, Component, ElementRef, NgZone, ViewChild } from '@an
 import { AudioRecordingService } from '../../services/audio-recording.service';
 import { Router } from 'express';
 import { HttpService } from '../../services/http.services';
+import { environment } from '../../../environment/environment';
 
+declare var webkitSpeechRecognition: any
+//declare var window: Window & typeof globalThis;
 @Component({
   selector: 'app-new-encounter',
   standalone: true,
@@ -14,6 +17,12 @@ export class NewEncounterComponent {
 
   audioURL: string | null = null;
   isRecording: boolean = false;
+  recordingStatus: boolean = false;
+  start!: any;
+  consultationStartDateTime!:any
+  isLoading: boolean = false;
+  jsonStr: any = "";
+  response: any;
 
   @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>;
 
@@ -32,7 +41,7 @@ export class NewEncounterComponent {
 
   startStopRecording() {
     if (this.recordingStatus) {
-      //stopRecording();
+      this.stopRecording();
     } else {
       var startRec = false;
       console.log("inside else");
@@ -101,8 +110,69 @@ export class NewEncounterComponent {
   startRecording() {
     this.isRecording = true;
     this.start = Date.now();
-    this.startTime = new Date().toISOString();
+    this.consultationStartDateTime = new Date().toISOString();
     this.audioRecordingService.startRecording();
   }
+
+  stopRecording() {
+    this.isRecording = false;
+    this.audioRecordingService.stopRecording();
+    let audioLength = Date.now() - this.start;
+    audioLength = audioLength / 1000;
+    console.log(this.start);
+    console.log("audioLength = ", audioLength);
+
+    this.audioRecordingService.audioBlob$.subscribe(blob => {
+        this.onUploadBlob(blob, audioLength,this.consultationStartDateTime,new Date().toISOString(),"");
+    });
+}
+
+
+  onUploadBlob(blob: Blob, audioLength: number,startTime:any,endTime:any,partitionKey:string) {
+    this.isLoading = true;
+    const formblob = new FormData();
+    formblob.append("files", blob)
+    this.http.post(environment.UploadBlob, formblob).subscribe((result: any) => {
+        console.log("blob Result", result);
+        const tableData = {
+            partitionKey: "20b65520-5337-4f0d-a047-7a70f579082f",
+            rowKey:result.fileName,
+            recordingBlobPath: environment.BlobPath + result.fileName + ".wav",
+            eTag: result.response.value.eTag,
+            encounterType:"General",
+            patientContext:"Test User",
+            consultationStartDateTime:startTime,
+            consultationEndDateTime:endTime
+        }
+        this.onSubmitPatientEncounter(blob, tableData, audioLength);
+    });
+}
+onSubmitPatientEncounter(blob: Blob, value: any, audioLength: number) {
+    this.http.post(environment.AddPatientEncounter, value).subscribe((result: any) => {
+        console.log("table Result", result);
+        this.onMLCall(blob, audioLength);
+    });
+}
+
+onMLCall(blob: Blob, audioLength: number) {
+    const formData = new FormData();
+    formData.append("audiofile", blob);
+    if (!this.jsonStr) {
+        this.jsonStr = '{"Type":"General","Reported_Issues":""}';
+    }
+    this.jsonStr = { ...JSON.parse(this.jsonStr), audio_length: audioLength };
+    console.log("ros JSON = ", this.jsonStr);
+    const blobFile = new Blob([JSON.stringify(this.jsonStr)], {
+        type: "application/json;charset=utf-8",
+    });
+    console.log("calling api now...............");
+    formData.append("jsonfile", blobFile);
+    this.http.postML(environment.MLSummary, formData).subscribe((result) => {
+        this.audioRecordingService.setEHRChange(result);
+        this.response = result;
+        this.isLoading = false;
+        //this.setAudioURL(blob);
+    });
+}
 
 }
