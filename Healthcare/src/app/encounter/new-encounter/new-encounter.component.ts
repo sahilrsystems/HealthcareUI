@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { AudioRecordingService } from '../../services/audio-recording.service';
-import { Router } from 'express';
 import { HttpService } from '../../services/http.services';
 import { environment } from '../../../environment/environment';
+import { Router } from '@angular/router';
 
 declare var webkitSpeechRecognition: any
-//declare var window: Window & typeof globalThis;
+declare var window: Window & typeof globalThis;
 @Component({
   selector: 'app-new-encounter',
   standalone: true,
