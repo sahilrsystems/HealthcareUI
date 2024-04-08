@@ -1,0 +1,39 @@
+    <h4>New Encounter</h4>
+    <div class="newEnco-wrap">
+        <div class="record-enco">
+            <div class="rec-txt">
+                Click <i class="bi bi-mic-fill"></i> to record encounter
+            </div>
+            <div class="rex-btn">
+                <button class="btn mic-btn" data-bs-toggle="modal" data-bs-target="#mic-modal">
+                    <i class="bi bi-mic-fill"></i>
+                </button>
+            </div>                                            
+            <div class="audioPlayer mb-4">
+                <audio #audioPlayer controls="">
+                </audio>
+            </div>
+            <div class="rec-from">
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">Encounter Type</label>
+                    <div class="col-sm-8">
+                      <select class="form-select">
+                        <option value="General Consultation" selected>General Consultation</option>
+                        <option value="Ophthalmology">Ophthalmology</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">Patient Context</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="2"></textarea>
+                    </div>
+                  </div>
+            </div>
+            <div class="row save-enco">
+                <div class="col-12">
+                    <button class="btn btn-blue">Save Encounter</button>
+                </div>
+            </div>                                          
+        </div>
+    </div>

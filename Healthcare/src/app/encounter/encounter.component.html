@@ -1,0 +1,46 @@
+<app-header></app-header>
+<!-- main section -->
+<section class="container-fluid">
+    <div class="row">
+        <div class="sidebar d-none">
+            <ul class="list-sidebar">
+                <li>
+                    <a href="index.html">
+                        <i class="bi bi-speedometer"></i>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="view-encounters.html">
+                        <i class="bi bi-display"></i>
+                        <span class="nav-label">View Encounters</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="view-patients.html">
+                        <i class="bi bi-person-fill"></i>
+                        <span class="nav-label">View Patients</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="rightSection padding-0">
+            <div class="row rightBodySection">
+                <div class="col-12 padding-0">
+                    <section class="pageHeadSection">
+                        <span>Encounters</span>
+                        <span>James Peterson (Male 1976-01-23) &nbsp;&nbsp;|&nbsp;&nbsp; EHR ID: u90-8uhn-00kh-llhsdjhsj6</span>
+                    </section>
+
+                    <!-- main body section -->
+                    <section class="mainBody">
+                        <div class="row">
+                         <app-new-encounter class="col-md-6"></app-new-encounter>
+                         <app-save-encounter class="col-md-6"></app-save-encounter>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

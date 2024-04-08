@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { RecordingComponent } from './component/recording/recording.component';
 import { ProblemdetailComponent } from './problemdetail/problemdetail.component';
+import { EncounterComponent } from './encounter/encounter.component';
 
 export const routes: Routes = [
     {
@@ -14,5 +15,9 @@ export const routes: Routes = [
     {
         path   :'problemDetail',
         component:ProblemdetailComponent
+    },
+    {
+        path   :'encounter',
+        component:EncounterComponent
     }
 ];
